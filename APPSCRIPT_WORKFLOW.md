@@ -13,7 +13,11 @@ in their Google cloud project without explicit confirmation.
 1. `node --version`             — If missing: install from nodejs.org, reopen the terminal.
 2. `clasp --version`            — If missing: `npm install -g @google/clasp`.
 3. `clasp show-authorized-user` — Prints their Google email. If it fails: `clasp login`.
-Do not continue until all three pass.
+4. `clasp list`                 — Confirms the Apps Script API is switched on for
+   their account. If it errors with "has not enabled the Apps Script API", send
+   them to https://script.google.com/home/usersettings to toggle "Google Apps
+   Script API" ON (same Google account as step 3), then re-run this check.
+Do not continue until all four pass.
 
 ## 2. Existing, multiple, or new?
 Offer the choice as a single click-through prompt (not free text), three options:
