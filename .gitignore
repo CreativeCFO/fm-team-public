@@ -1,0 +1,8 @@
+# macOS
+.DS_Store
+
+# Never commit credentials, even by accident
+.clasprc.json
+client_secret*.json
+*.env
+.env
