@@ -16,23 +16,28 @@ in their Google cloud project without explicit confirmation.
 Do not continue until all three pass.
 
 ## 2. Existing, multiple, or new?
-Ask: "Do you have one existing Apps Script to open, several related scripts to
-work on together, or are you creating a new one?"
+Offer the choice as a single click-through prompt (not free text), three options:
+- **One existing script** — open a single existing Apps Script.
+- **Several related scripts** — work on two or more together.
+- **New** — create one from scratch.
 
-### Existing (one script)
+### One existing script
 1. Ask them to open the Sheet → Extensions → Apps Script → Project Settings →
    Script ID, and paste it.
 2. Run `clasp clone <ScriptID>` in the current folder.
 3. Confirm the files came down and they can see them.
 
-### Existing (multiple related scripts)
-Use this when working on two or more related scripts together. clasp tracks one
-script per folder, so give each script its own subfolder — never clone two
-scripts into the same folder (they'd clash and mix files).
-1. Pick a short name for each script and note its Script ID (Sheet → Extensions
-   → Apps Script → Project Settings).
-2. For each script, make a subfolder and clone into it, e.g.:
-   `mkdir hello-tools && (cd hello-tools && clasp clone <ScriptID>)`
+### Several related scripts
+Use this when several scripts belong together — e.g. a budget forecast split
+across divisions ("Budget Forecast - Division A", "Budget Forecast - Division B"):
+separate Sheets, but logically one company's model. clasp tracks one script per
+folder, so each script gets its own subfolder — never clone two into the same
+folder (they'd clash and mix files).
+1. Collect the scripts one at a time: ask for the first Script ID and what that
+   Sheet is called, then the next, and so on until they say they're done. One
+   prompt per script.
+2. For each, kebab-case the Sheet name into a folder and clone into it, e.g.:
+   `mkdir budget-forecast-division-a && (cd budget-forecast-division-a && clasp clone <ScriptID>)`
 3. Keep ONE shared CLAUDE.md at the top level so the rules cover every script
    (see section 3).
 4. From now on, run `clasp pull` / `clasp push` from INSIDE the relevant
@@ -43,9 +48,9 @@ scripts into the same folder (they'd clash and mix files).
 
 Resulting layout:
     project/
-    ├── CLAUDE.md            ← shared rules (cover all scripts)
-    ├── hello-tools/         ← script 1: Code.js, appsscript.json, README.md, .clasp.json
-    └── goodnight-world/     ← script 2: ...
+    ├── CLAUDE.md                      ← shared rules (cover all scripts)
+    ├── budget-forecast-division-a/    ← script: Code.js, appsscript.json, README.md, .clasp.json
+    └── budget-forecast-division-b/    ← script: ...
 
 ### New (standard process — Sheet first)
 1. Ask them to create the Google Sheet in the team Shared Drive, then
@@ -82,3 +87,20 @@ Every project needs a README.md whose first five sections, in order, are:
 4. ## How it runs
 5. ## Owner
 Anything else goes below a `---` divider.
+
+### Filling it in — don't make them write it all
+Never hand the user a blank template. Walk through the sections one at a time,
+one click-through prompt each: suggest the text and let them accept it or type
+their own.
+- **Business problem** — the user curates this one. Ask for it in their words;
+  a suggestion is only a starting point, the substance is theirs.
+- **What it does** — draft from the actual code (menus, functions, the output
+  or message). Present the draft; they accept or edit.
+- **Systems & APIs touched** — infer from the code (SpreadsheetApp → Google
+  Sheets, UrlFetchApp → the external API, etc.). Present the draft; accept or edit.
+- **How it runs** — infer from the triggers (onOpen menu, time-based trigger,
+  manual run). Present the draft; accept or edit.
+- **Owner** — default to the logged-in clasp account
+  (`clasp show-authorized-user`); offer it pre-filled, let them name a different
+  person. Owner is always a person, never a team or group.
+The push gate still applies: five sections, in order, no placeholder text left.
