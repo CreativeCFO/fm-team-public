@@ -15,14 +15,37 @@ in their Google cloud project without explicit confirmation.
 3. `clasp show-authorized-user` — Prints their Google email. If it fails: `clasp login`.
 Do not continue until all three pass.
 
-## 2. Existing or new?
-Ask: "Do you have an existing Apps Script to open, or are you creating a new one?"
+## 2. Existing, multiple, or new?
+Ask: "Do you have one existing Apps Script to open, several related scripts to
+work on together, or are you creating a new one?"
 
-### Existing
+### Existing (one script)
 1. Ask them to open the Sheet → Extensions → Apps Script → Project Settings →
    Script ID, and paste it.
 2. Run `clasp clone <ScriptID>` in the current folder.
 3. Confirm the files came down and they can see them.
+
+### Existing (multiple related scripts)
+Use this when working on two or more related scripts together. clasp tracks one
+script per folder, so give each script its own subfolder — never clone two
+scripts into the same folder (they'd clash and mix files).
+1. Pick a short name for each script and note its Script ID (Sheet → Extensions
+   → Apps Script → Project Settings).
+2. For each script, make a subfolder and clone into it, e.g.:
+   `mkdir hello-tools && (cd hello-tools && clasp clone <ScriptID>)`
+3. Keep ONE shared CLAUDE.md at the top level so the rules cover every script
+   (see section 3).
+4. From now on, run `clasp pull` / `clasp push` from INSIDE the relevant
+   script's subfolder, so every command hits the right project. State which
+   script you're working on before each change.
+5. Each subfolder still needs its own README.md (section 6) before it can be
+   pushed.
+
+Resulting layout:
+    project/
+    ├── CLAUDE.md            ← shared rules (cover all scripts)
+    ├── hello-tools/         ← script 1: Code.js, appsscript.json, README.md, .clasp.json
+    └── goodnight-world/     ← script 2: ...
 
 ### New (standard process — Sheet first)
 1. Ask them to create the Google Sheet in the team Shared Drive, then
@@ -34,6 +57,8 @@ Ask: "Do you have an existing Apps Script to open, or are you creating a new one
 Fetch this and save it into the project folder as CLAUDE.md, so the rules load
 automatically every future session:
   https://raw.githubusercontent.com/CreativeCFO/fm-team-public/main/CLAUDE.template.md
+For a multiple-scripts setup, save it once at the TOP level so it covers all the
+subfolders — not one per script.
 
 ## 4. Working rules
 - Always `clasp pull` before editing.
