@@ -92,6 +92,13 @@ Every project needs a README.md whose first five sections, in order, are:
 5. ## Owner
 Anything else goes below a `---` divider.
 
+### When to build it
+Build the README when preparing the FIRST push — not during setup. By then you
+have worked on the script and seen what it does, so your drafts of What it does /
+Systems & APIs / How it runs are grounded in the real code instead of guessed up
+front. At setup time, do not ask for any of this; just get them working. The
+README is the last gate before code first goes live.
+
 ### Filling it in — don't make them write it all
 Never hand the user a blank template. Walk through the sections one at a time,
 one click-through prompt each: suggest the text and let them accept it or type
